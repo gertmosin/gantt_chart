@@ -20,7 +20,7 @@ export default class Names {
         header.classList.add('header');
         // const row_height = this.gantt.options.bar_height + this.gantt.options.padding;
         header.style.height = this.gantt.options.header_height + 10 + 'px';
-        headerText.innerText = 'Aloha';
+        headerText.innerText = this.gantt.options.custom_names.header;
 
         header.appendChild(headerText);
 
@@ -53,7 +53,7 @@ export default class Names {
 
         const parentDiv = document.createElement('div');
         const taskDiv = document.createElement('div');
-        const editButton = document.createElement('button');
+
         const nameField = document.createElement('span');
 
         nameField.textContent = this.task?.name;
@@ -65,12 +65,34 @@ export default class Names {
         taskDiv.setAttribute('data-value', this.task?.id);
         taskDiv.appendChild(nameField);
 
-        editButton.textContent = 'Muuda';
+        this.gantt.options.custom_names.buttons?.forEach(button => {
+            const actionButton = document.createElement('button');
+            actionButton.textContent = button.label;
+            $.on(actionButton, 'click', (e) => {
+                this.gantt.trigger_event(button?.trigger, [this.task]);
+            });
 
-        $.on(editButton, 'click', (e) => {
-            // console.log(this.gantt);
-            this.gantt.trigger_event('edit', [this.task]);
-        });
+            parentDiv.appendChild(actionButton);
+        })
+
+        // b1.textContent = this.gantt.options.custom_names.b1.label;
+        // b2.textContent = this.gantt.options.custom_names.b2.label;
+        // b3.textContent = this.gantt.options.custom_names.b3.label;
+        //
+        // $.on(b1, 'click', (e) => {
+        //     // console.log(this.gantt);
+        //     this.gantt.trigger_event('action1', [this.task]);
+        // });
+        //
+        // $.on(b2, 'click', (e) => {
+        //     // console.log(this.gantt);
+        //     this.gantt.trigger_event('action2', [this.task]);
+        // });
+        //
+        // $.on(b3, 'click', (e) => {
+        //     // console.log(this.gantt);
+        //     this.gantt.trigger_event('action3', [this.task]);
+        // });
 
         parentDiv.append(taskDiv);
         // parentDiv.append(editButton, taskDiv);

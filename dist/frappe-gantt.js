@@ -1112,7 +1112,7 @@ var Gantt = (function () {
             header.classList.add('header');
             // const row_height = this.gantt.options.bar_height + this.gantt.options.padding;
             header.style.height = this.gantt.options.header_height + 10 + 'px';
-            headerText.innerText = 'Aloha';
+            headerText.innerText = this.gantt.options.custom_names.header;
 
             header.appendChild(headerText);
 
@@ -1145,7 +1145,7 @@ var Gantt = (function () {
 
             const parentDiv = document.createElement('div');
             const taskDiv = document.createElement('div');
-            const editButton = document.createElement('button');
+
             const nameField = document.createElement('span');
 
             nameField.textContent = this.task?.name;
@@ -1157,12 +1157,34 @@ var Gantt = (function () {
             taskDiv.setAttribute('data-value', this.task?.id);
             taskDiv.appendChild(nameField);
 
-            editButton.textContent = 'Muuda';
+            this.gantt.options.custom_names.buttons?.forEach(button => {
+                const actionButton = document.createElement('button');
+                actionButton.textContent = button.label;
+                $.on(actionButton, 'click', (e) => {
+                    this.gantt.trigger_event(button?.trigger, [this.task]);
+                });
 
-            $.on(editButton, 'click', (e) => {
-                // console.log(this.gantt);
-                this.gantt.trigger_event('edit', [this.task]);
+                parentDiv.appendChild(actionButton);
             });
+
+            // b1.textContent = this.gantt.options.custom_names.b1.label;
+            // b2.textContent = this.gantt.options.custom_names.b2.label;
+            // b3.textContent = this.gantt.options.custom_names.b3.label;
+            //
+            // $.on(b1, 'click', (e) => {
+            //     // console.log(this.gantt);
+            //     this.gantt.trigger_event('action1', [this.task]);
+            // });
+            //
+            // $.on(b2, 'click', (e) => {
+            //     // console.log(this.gantt);
+            //     this.gantt.trigger_event('action2', [this.task]);
+            // });
+            //
+            // $.on(b3, 'click', (e) => {
+            //     // console.log(this.gantt);
+            //     this.gantt.trigger_event('action3', [this.task]);
+            // });
 
             parentDiv.append(taskDiv);
             // parentDiv.append(editButton, taskDiv);
@@ -1442,9 +1464,29 @@ var Gantt = (function () {
                 padding: 18,
                 view_mode: 'Day',
                 date_format: 'YYYY-MM-DD',
-                popup_trigger: 'click',
+                popup_trigger: 'mouseover',
                 custom_popup_html: null,
                 language: 'et',
+                custom_names: {
+                    header: 'Items',
+                    buttons: [], // label:string, trigger:string
+
+                    // b1: {
+                    //     label: 'Button 1',
+                    //     active: false
+                    // },
+                    // b2: {
+                    //     label: 'Button 2',
+                    //     active: false
+                    // },
+                    // b3: {
+                    //     label: 'Button 3',
+                    //     active: false
+                    // },
+                    // first_button_label: "Button 1",
+                    // second_button_label: "Button 2",
+                    // third_button_label: "Button 3"
+                }
             };
             this.options = Object.assign({}, default_options, options);
         }
