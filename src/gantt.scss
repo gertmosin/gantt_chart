@@ -49,6 +49,8 @@ $handle-color: #ddd !default;
     display: flex;
     gap: 5px;
     align-items: center;
+    padding-right: 10px;
+    padding-left: 10px;
     // display: flex;
     // flex-direction: column;
     // justify-content: end;
@@ -90,7 +92,7 @@ $handle-color: #ddd !default;
         // }
 
         span {
-            padding-right: 10px;
+            //padding-right: 10px;
         }
         // text-align: end;
     }
