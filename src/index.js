@@ -361,7 +361,8 @@ export default class Gantt {
         this.map_arrows_on_bars();
         this.set_width();
         this.set_scroll_position();
-        this.display_names(this.options, this.tasks);
+        this.make_names();
+        // this.display_names(this.options, this.tasks);
     }
 
     setup_layers() {
@@ -658,6 +659,22 @@ export default class Gantt {
         });
     }
 
+    make_names() {
+        const header = new Names(this);
+        this.$titles.appendChild(header.makeHeader());
+        this.names = this.tasks.map((task) => {
+            const name = new Names(this, task);
+
+            const elem = name.make();
+            console.log(elem);
+            // console.log(name);
+            this.$titles.appendChild(elem);
+            // this.layers.bar.appendChild(bar.group);
+            return name;
+        });
+        console.log(this.names);
+    }
+
     make_arrows() {
         this.arrows = [];
         for (let task of this.tasks) {
@@ -726,22 +743,24 @@ export default class Gantt {
         // );
 
         const taskToScroll = this.tasks.find((task) => task.id === taskId);
-        console.log(taskToScroll);
-        const parent_element = this.$svg.parentElement;
-        if (!parent_element) return;
+        // console.log(taskToScroll);
+        if (taskToScroll) {
+            const parent_element = this.$svg.parentElement;
+            if (!parent_element) return;
 
-        const hours_before_first_task = date_utils.diff(
-            taskToScroll._start,
-            this.gantt_start,
-            'hour'
-        );
+            const hours_before_first_task = date_utils.diff(
+                taskToScroll._start,
+                this.gantt_start,
+                'hour'
+            );
 
-        const scroll_pos =
-            (hours_before_first_task / this.options.step) *
-                this.options.column_width -
-            this.options.column_width;
+            const scroll_pos =
+                (hours_before_first_task / this.options.step) *
+                    this.options.column_width -
+                this.options.column_width;
 
-        parent_element.scrollLeft = scroll_pos;
+            parent_element.scrollLeft = scroll_pos;
+        }
     }
 
     bind_grid_click() {
@@ -1000,18 +1019,19 @@ export default class Gantt {
         this.popup.show(options);
     }
 
-    display_names(options, tasks) {
-        console.log('display_names triggered');
-        if (!this.names) {
-            this.names = new Names(
-                this.$titles,
-                this.options.custom_popup_html,
-                this.options,
-                this.tasks
-            );
-        }
-        this.names.make(options, tasks);
-    }
+    // display_names(options, tasks) {
+    //     console.log('display_names triggered');
+    //     if (!this.names) {
+    //         this.names = new Names(
+    //             this.$titles,
+    //             this.options.custom_popup_html,
+    //             this.options,
+    //             this.tasks,
+    //             this
+    //         );
+    //     }
+    //     this.names.make(options, tasks);
+    // }
 
     hide_popup() {
         this.popup && this.popup.hide();

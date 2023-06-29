@@ -1093,22 +1093,41 @@ var Gantt = (function () {
     }
 
     class Names {
-        constructor(parent, custom_html, options, tasks) {
-            this.parent = parent;
-            this.custom_html = custom_html;
-            this.make(options, tasks);
-            console.log(tasks);
+        // constructor(parent, custom_html, options, tasks, gantt) {
+        //     this.parent = parent;
+        //     this.custom_html = custom_html;
+        //     this.gantt = gantt;
+        //     this.make(options, tasks);
+        //     console.log(tasks);
+        // }
+        constructor(gantt, task) {
+            this.task = task;
+            this.gantt = gantt;
+            this.make();
         }
 
-        make(options, tasks) {
-            this.parent.innerHTML = `
-            <div class="header"><span>Items</span></div>
-            <div class="tasks"></div>
-        `;
+        makeHeader() {
+            const header = document.createElement('div');
+            const headerText = document.createElement('span');
+            header.classList.add('header');
+            // const row_height = this.gantt.options.bar_height + this.gantt.options.padding;
+            header.style.height = this.gantt.options.header_height + 10 + 'px';
+            headerText.innerText = 'Aloha';
+
+            header.appendChild(headerText);
+
+            return header;
+        }
+
+        make() {
+            // this.parent.innerHTML = `
+            //     <div class="header"><span>Items</span></div>
+            //     <div class="tasks"></div>
+            // `;
 
             // this.hide();
-            this.header = this.parent.querySelector('.header');
-            this.tasksElement = this.parent.querySelector('.tasks');
+            // this.header = this.parent.querySelector('.header');
+            // this.tasksElement = this.parent.querySelector('.tasks');
             // this.tasksElement.style.display = 'flex';
             // this.tasksElement.style.flexDirection = 'column';
             // this.title = this.parent.querySelector('.title');
@@ -1117,27 +1136,103 @@ var Gantt = (function () {
 
             // console.log(this.tasksElement);
 
-            const taskElements = [];
-            const row_height = options.bar_height + options.padding;
+            // const taskElements = [];
+            const row_height =
+                this.gantt.options.bar_height + this.gantt.options.padding;
 
-            for (let i = 0; i < tasks?.length; i++) {
-                // console.log(tasks[i]);
-                taskElements.push(
-                    `<div class='task' data-value='${tasks[i].id}' style='height: ${row_height}px;'><span>${tasks[i].name}</span></div>`
-                );
-                // console.log(emptyElement);
-                // const taskElement = document.createElement('span');
-                // taskElement.classList.add('single-task');
-                // taskElement.innerText = tasks[i].name;
-                // this.tasksElement.append(taskElement);
-                // this.tasksElement.innerHTML = emptyElement;
-            }
+            // for (let i = 0; i < tasks?.length; i++) {
+            // console.log(tasks[i]);
 
-            console.log(this.$svg);
-            this.tasksElement.innerHTML = taskElements.join(' ');
-            this.header.style.height = options.header_height + 10 + 'px';
+            const parentDiv = document.createElement('div');
+            const taskDiv = document.createElement('div');
+            const editButton = document.createElement('button');
+            const nameField = document.createElement('span');
+
+            nameField.textContent = this.task?.name;
+
+            parentDiv.classList.add('tasks');
+
+            taskDiv.classList.add('task');
+            taskDiv.style.height = `${row_height}px`;
+            taskDiv.setAttribute('data-value', this.task?.id);
+            taskDiv.appendChild(nameField);
+
+            editButton.textContent = 'Muuda';
+
+            $.on(editButton, 'click', (e) => {
+                // console.log(this.gantt);
+                this.gantt.trigger_event('edit', [this.task]);
+            });
+
+            parentDiv.append(taskDiv);
+            // parentDiv.append(editButton, taskDiv);
+
+            return parentDiv;
+
+            // console.log(emptyElement);
+            // const taskElement = document.createElement('span');
+            // taskElement.classList.add('single-task');
+            // taskElement.innerText = tasks[i].name;
+            // this.tasksElement.append(taskElement);
+            // this.tasksElement.innerHTML = emptyElement;
+            // }
+
+            // console.log(this.$svg);
+            // this.tasksElement.innerHTML = taskElements.join(' ');
+            // this.header.style.height = options.header_height + 10 + 'px';
             // this.title.innerText = 'asdjasdasdasd';
+
+            // const taskButton = this.parent.querySelector('#task_button');
+            // $.on(taskButton, 'click', (e) => {
+            //     console.log(this.gantt);
+            //     this.gantt.trigger_event('edit', [this.gantt.get_task]);
+            // });
         }
+
+        // make(options, tasks) {
+        //     this.parent.innerHTML = `
+        //         <div class="header"><span>Items</span></div>
+        //         <div class="tasks"></div>
+        //     `;
+
+        //     // this.hide();
+        //     this.header = this.parent.querySelector('.header');
+        //     this.tasksElement = this.parent.querySelector('.tasks');
+        //     // this.tasksElement.style.display = 'flex';
+        //     // this.tasksElement.style.flexDirection = 'column';
+        //     // this.title = this.parent.querySelector('.title');
+        //     // this.subtitle = this.parent.querySelector('.subtitle');
+        //     // this.pointer = this.parent.querySelector('.pointer');
+
+        //     // console.log(this.tasksElement);
+
+        //     const taskElements = [];
+        //     const row_height = options.bar_height + options.padding;
+
+        //     for (let i = 0; i < tasks?.length; i++) {
+        //         // console.log(tasks[i]);
+        //         taskElements.push(
+        //             `<div><button id="task_button">trigger</button><div class='task' data-value='${tasks[i].id}' style='height: ${row_height}px;'><span>${tasks[i].name}</span></div></div>`
+        //         );
+        //         // console.log(emptyElement);
+        //         // const taskElement = document.createElement('span');
+        //         // taskElement.classList.add('single-task');
+        //         // taskElement.innerText = tasks[i].name;
+        //         // this.tasksElement.append(taskElement);
+        //         // this.tasksElement.innerHTML = emptyElement;
+        //     }
+
+        //     console.log(this.$svg);
+        //     this.tasksElement.innerHTML = taskElements.join(' ');
+        //     this.header.style.height = options.header_height + 10 + 'px';
+        //     // this.title.innerText = 'asdjasdasdasd';
+
+        //     const taskButton = this.parent.querySelector('#task_button');
+        //     $.on(taskButton, 'click', (e) => {
+        //         console.log(this.gantt);
+        //         this.gantt.trigger_event('edit', [this.gantt.get_task]);
+        //     });
+        // }
 
         // show(options) {
         //     if (!options.target_element) {
@@ -1542,7 +1637,8 @@ var Gantt = (function () {
             this.map_arrows_on_bars();
             this.set_width();
             this.set_scroll_position();
-            this.display_names(this.options, this.tasks);
+            this.make_names();
+            // this.display_names(this.options, this.tasks);
         }
 
         setup_layers() {
@@ -1839,6 +1935,22 @@ var Gantt = (function () {
             });
         }
 
+        make_names() {
+            const header = new Names(this);
+            this.$titles.appendChild(header.makeHeader());
+            this.names = this.tasks.map((task) => {
+                const name = new Names(this, task);
+
+                const elem = name.make();
+                console.log(elem);
+                // console.log(name);
+                this.$titles.appendChild(elem);
+                // this.layers.bar.appendChild(bar.group);
+                return name;
+            });
+            console.log(this.names);
+        }
+
         make_arrows() {
             this.arrows = [];
             for (let task of this.tasks) {
@@ -1907,22 +2019,24 @@ var Gantt = (function () {
             // );
 
             const taskToScroll = this.tasks.find((task) => task.id === taskId);
-            console.log(taskToScroll);
-            const parent_element = this.$svg.parentElement;
-            if (!parent_element) return;
+            // console.log(taskToScroll);
+            if (taskToScroll) {
+                const parent_element = this.$svg.parentElement;
+                if (!parent_element) return;
 
-            const hours_before_first_task = date_utils.diff(
-                taskToScroll._start,
-                this.gantt_start,
-                'hour'
-            );
+                const hours_before_first_task = date_utils.diff(
+                    taskToScroll._start,
+                    this.gantt_start,
+                    'hour'
+                );
 
-            const scroll_pos =
-                (hours_before_first_task / this.options.step) *
-                    this.options.column_width -
-                this.options.column_width;
+                const scroll_pos =
+                    (hours_before_first_task / this.options.step) *
+                        this.options.column_width -
+                    this.options.column_width;
 
-            parent_element.scrollLeft = scroll_pos;
+                parent_element.scrollLeft = scroll_pos;
+            }
         }
 
         bind_grid_click() {
@@ -2181,18 +2295,19 @@ var Gantt = (function () {
             this.popup.show(options);
         }
 
-        display_names(options, tasks) {
-            console.log('display_names triggered');
-            if (!this.names) {
-                this.names = new Names(
-                    this.$titles,
-                    this.options.custom_popup_html,
-                    this.options,
-                    this.tasks
-                );
-            }
-            this.names.make(options, tasks);
-        }
+        // display_names(options, tasks) {
+        //     console.log('display_names triggered');
+        //     if (!this.names) {
+        //         this.names = new Names(
+        //             this.$titles,
+        //             this.options.custom_popup_html,
+        //             this.options,
+        //             this.tasks,
+        //             this
+        //         );
+        //     }
+        //     this.names.make(options, tasks);
+        // }
 
         hide_popup() {
             this.popup && this.popup.hide();
