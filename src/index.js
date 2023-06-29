@@ -1,8 +1,9 @@
 import date_utils from './date_utils';
-import { $, createSVG } from './svg_utils';
+import { $, createSVG, createCanvas } from './svg_utils';
 import Bar from './bar';
 import Arrow from './arrow';
 import Popup from './popup';
+import Names from './names';
 
 import './gantt.scss';
 
@@ -49,6 +50,7 @@ export default class Gantt {
         // svg element
         if (!svg_element) {
             // create it
+            // this.$svg = createSVG('svg', {
             this.$svg = createSVG('svg', {
                 append_to: wrapper_element,
                 class: 'gantt',
@@ -58,11 +60,16 @@ export default class Gantt {
             this.$svg.classList.add('gantt');
         }
 
+        // names element
+        this.$titles = document.createElement('div');
+        this.$titles.classList.add('names');
+
         // wrapper element
         this.$container = document.createElement('div');
         this.$container.classList.add('gantt-container');
 
         const parent_element = this.$svg.parentElement;
+        parent_element.appendChild(this.$titles);
         parent_element.appendChild(this.$container);
         this.$container.appendChild(this.$svg);
 
@@ -70,6 +77,81 @@ export default class Gantt {
         this.popup_wrapper = document.createElement('div');
         this.popup_wrapper.classList.add('popup-wrapper');
         this.$container.appendChild(this.popup_wrapper);
+
+        let mouseDown = false;
+        let startX, scrollLeft;
+        let container = this.$container;
+
+        // console.log(this);
+
+        // console.log(wrapper_element);
+        let startDragging = function (e) {
+            // console.log(container);
+            mouseDown = true;
+            startX = e.pageX - container.offsetLeft;
+            scrollLeft = container.scrollLeft;
+        };
+        let stopDragging = function (event) {
+            mouseDown = false;
+        };
+        $.on(
+            container,
+            'mousemove',
+            '.grid, .grid-background',
+            (e, element) => {
+                // console.log(container);
+                if (!mouseDown) {
+                    return;
+                }
+                const x = e.pageX - container.offsetLeft;
+                // console.log(x);
+                const scroll = x - startX;
+                container.scrollLeft = scrollLeft - scroll;
+            }
+        );
+
+        $.on(container, 'mousedown', '.grid, .grid-background', startDragging);
+        $.on(container, 'mouseup', '.grid, .grid-background', stopDragging);
+        $.on(container, 'mouseleave', '.gantt-container', stopDragging);
+
+        $.on(this.$titles, 'click', '.tasks, .task', (event, element) => {
+            // console.log(event, 'event');
+            // console.log(element, 'element');
+            this.scroll_to_task(element.getAttribute('data-value'));
+            // console.log(element.getAttribute('data-value'));
+        });
+    }
+
+    make_grid_names() {
+        const rows_layer = createSVG('g', { append_to: this.layers.grid });
+        const lines_layer = createSVG('g', { append_to: this.layers.grid });
+
+        const row_width = this.dates.length * this.options.column_width;
+        const row_height = this.options.bar_height + this.options.padding;
+
+        let row_y = this.options.header_height + this.options.padding / 2;
+
+        for (let task of this.tasks) {
+            createSVG('rect', {
+                x: 0,
+                y: row_y,
+                width: row_width,
+                height: row_height,
+                class: 'grid-row',
+                append_to: rows_layer,
+            });
+
+            createSVG('line', {
+                x1: 0,
+                y1: row_y + row_height,
+                x2: row_width,
+                y2: row_y + row_height,
+                class: 'row-line',
+                append_to: lines_layer,
+            });
+
+            row_y += this.options.bar_height + this.options.padding;
+        }
     }
 
     setup_options(options) {
@@ -86,7 +168,7 @@ export default class Gantt {
             date_format: 'YYYY-MM-DD',
             popup_trigger: 'click',
             custom_popup_html: null,
-            language: 'en',
+            language: 'et',
         };
         this.options = Object.assign({}, default_options, options);
     }
@@ -279,6 +361,7 @@ export default class Gantt {
         this.map_arrows_on_bars();
         this.set_width();
         this.set_scroll_position();
+        this.display_names(this.options, this.tasks);
     }
 
     setup_layers() {
@@ -319,7 +402,8 @@ export default class Gantt {
         });
 
         $.attr(this.$svg, {
-            height: grid_height + this.options.padding + 100,
+            height: grid_height + 100,
+            // height: '100%',
             width: '100%',
         });
     }
@@ -634,6 +718,32 @@ export default class Gantt {
         parent_element.scrollLeft = scroll_pos;
     }
 
+    scroll_to_task(taskId) {
+        // return this.tasks
+        // .map((task) => task._start)
+        // .reduce((prev_date, cur_date) =>
+        //     cur_date <= prev_date ? cur_date : prev_date
+        // );
+
+        const taskToScroll = this.tasks.find((task) => task.id === taskId);
+        console.log(taskToScroll);
+        const parent_element = this.$svg.parentElement;
+        if (!parent_element) return;
+
+        const hours_before_first_task = date_utils.diff(
+            taskToScroll._start,
+            this.gantt_start,
+            'hour'
+        );
+
+        const scroll_pos =
+            (hours_before_first_task / this.options.step) *
+                this.options.column_width -
+            this.options.column_width;
+
+        parent_element.scrollLeft = scroll_pos;
+    }
+
     bind_grid_click() {
         $.on(
             this.$svg,
@@ -888,6 +998,19 @@ export default class Gantt {
             );
         }
         this.popup.show(options);
+    }
+
+    display_names(options, tasks) {
+        console.log('display_names triggered');
+        if (!this.names) {
+            this.names = new Names(
+                this.$titles,
+                this.options.custom_popup_html,
+                this.options,
+                this.tasks
+            );
+        }
+        this.names.make(options, tasks);
     }
 
     hide_popup() {

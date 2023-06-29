@@ -19,6 +19,21 @@ export function createSVG(tag, attrs) {
     return elem;
 }
 
+export function createCanvas(tag, attrs) {
+    const elem = document.createElement('canvas', tag);
+    for (let attr in attrs) {
+        if (attr === 'append_to') {
+            const parent = attrs.append_to;
+            parent.appendChild(elem);
+        } else if (attr === 'innerHTML') {
+            elem.innerHTML = attrs.innerHTML;
+        } else {
+            elem.setAttribute(attr, attrs[attr]);
+        }
+    }
+    return elem;
+}
+
 export function animateSVG(svgElement, attr, from, to) {
     const animatedSvgElement = getAnimationElement(svgElement, attr, from, to);
 

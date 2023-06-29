@@ -24,6 +24,20 @@ var Gantt = (function () {
             'November',
             'December',
         ],
+        et: [
+            'Jaanuar',
+            'Veebruar',
+            'Märts',
+            'Aprill',
+            'Mai',
+            'Juuni',
+            'Juuli',
+            'August',
+            'September',
+            'Oktoober',
+            'November',
+            'Detsember',
+        ],
         es: [
             'Enero',
             'Febrero',
@@ -37,6 +51,20 @@ var Gantt = (function () {
             'Octubre',
             'Noviembre',
             'Diciembre',
+        ],
+        it: [
+            'Gennaio',
+            'Febbraio',
+            'Marzo',
+            'Aprile',
+            'Maggio',
+            'Giugno',
+            'Luglio',
+            'Agosto',
+            'Settembre',
+            'Ottobre',
+            'Novembre',
+            'Dicembre',
         ],
         ru: [
             'Январь',
@@ -107,6 +135,34 @@ var Gantt = (function () {
             '十月',
             '十一月',
             '十二月',
+        ],
+        de: [
+            'Januar',
+            'Februar',
+            'März',
+            'April',
+            'Mai',
+            'Juni',
+            'Juli',
+            'August',
+            'September',
+            'Oktober',
+            'November',
+            'Dezember',
+        ],
+        hu: [
+            'Január',
+            'Február',
+            'Március',
+            'Április',
+            'Május',
+            'Június',
+            'Július',
+            'Augusztus',
+            'Szeptember',
+            'Október',
+            'November',
+            'December',
         ],
     };
 
@@ -529,7 +585,7 @@ var Gantt = (function () {
         draw() {
             this.draw_bar();
             this.draw_progress_bar();
-            this.draw_label();
+            // this.draw_label();
             this.draw_resize_handles();
         }
 
@@ -699,7 +755,7 @@ var Gantt = (function () {
             if (width && width >= this.gantt.options.column_width) {
                 this.update_attr(bar, 'width', width);
             }
-            this.update_label_position();
+            // this.update_label_position();
             this.update_handle_position();
             this.update_progressbar_position();
             this.update_arrow_position();
@@ -828,6 +884,7 @@ var Gantt = (function () {
         }
 
         update_progressbar_position() {
+            if (this.invalid) return;
             this.$bar_progress.setAttribute('x', this.$bar.getX());
             this.$bar_progress.setAttribute(
                 'width',
@@ -849,6 +906,7 @@ var Gantt = (function () {
         }
 
         update_handle_position() {
+            if (this.invalid) return;
             const bar = this.$bar;
             this.handle_group
                 .querySelector('.handle.left')
@@ -1034,6 +1092,102 @@ var Gantt = (function () {
         }
     }
 
+    class Names {
+        constructor(parent, custom_html, options, tasks) {
+            this.parent = parent;
+            this.custom_html = custom_html;
+            this.make(options, tasks);
+            console.log(tasks);
+        }
+
+        make(options, tasks) {
+            this.parent.innerHTML = `
+            <div class="header"><span>Items</span></div>
+            <div class="tasks"></div>
+        `;
+
+            // this.hide();
+            this.header = this.parent.querySelector('.header');
+            this.tasksElement = this.parent.querySelector('.tasks');
+            // this.tasksElement.style.display = 'flex';
+            // this.tasksElement.style.flexDirection = 'column';
+            // this.title = this.parent.querySelector('.title');
+            // this.subtitle = this.parent.querySelector('.subtitle');
+            // this.pointer = this.parent.querySelector('.pointer');
+
+            // console.log(this.tasksElement);
+
+            const taskElements = [];
+            const row_height = options.bar_height + options.padding;
+
+            for (let i = 0; i < tasks?.length; i++) {
+                // console.log(tasks[i]);
+                taskElements.push(
+                    `<div class='task' data-value='${tasks[i].id}' style='height: ${row_height}px;'><span>${tasks[i].name}</span></div>`
+                );
+                // console.log(emptyElement);
+                // const taskElement = document.createElement('span');
+                // taskElement.classList.add('single-task');
+                // taskElement.innerText = tasks[i].name;
+                // this.tasksElement.append(taskElement);
+                // this.tasksElement.innerHTML = emptyElement;
+            }
+
+            console.log(this.$svg);
+            this.tasksElement.innerHTML = taskElements.join(' ');
+            this.header.style.height = options.header_height + 10 + 'px';
+            // this.title.innerText = 'asdjasdasdasd';
+        }
+
+        // show(options) {
+        //     if (!options.target_element) {
+        //         throw new Error('target_element is required to show popup');
+        //     }
+        //     if (!options.position) {
+        //         options.position = 'left';
+        //     }
+        //     const target_element = options.target_element;
+
+        //     if (this.custom_html) {
+        //         let html = this.custom_html(options.task);
+        //         html += '<div class="pointer"></div>';
+        //         this.parent.innerHTML = html;
+        //         this.pointer = this.parent.querySelector('.pointer');
+        //     } else {
+        //         // set data
+        //         this.title.innerHTML = options.title;
+        //         this.subtitle.innerHTML = options.subtitle;
+        //         this.parent.style.width = this.parent.clientWidth + 'px';
+        //     }
+
+        //     // set position
+        //     let position_meta;
+        //     if (target_element instanceof HTMLElement) {
+        //         position_meta = target_element.getBoundingClientRect();
+        //     } else if (target_element instanceof SVGElement) {
+        //         position_meta = options.target_element.getBBox();
+        //     }
+
+        //     if (options.position === 'left') {
+        //         this.parent.style.left =
+        //             position_meta.x + (position_meta.width + 10) + 'px';
+        //         this.parent.style.top = position_meta.y + 'px';
+
+        //         this.pointer.style.transform = 'rotateZ(90deg)';
+        //         this.pointer.style.left = '-7px';
+        //         this.pointer.style.top = '2px';
+        //     }
+
+        //     // show
+        //     this.parent.style.opacity = 1;
+        // }
+
+        // hide() {
+        //     this.parent.style.opacity = 0;
+        //     this.parent.style.left = 0;
+        // }
+    }
+
     const VIEW_MODE = {
         QUARTER_DAY: 'Quarter Day',
         HALF_DAY: 'Half Day',
@@ -1077,6 +1231,7 @@ var Gantt = (function () {
             // svg element
             if (!svg_element) {
                 // create it
+                // this.$svg = createSVG('svg', {
                 this.$svg = createSVG('svg', {
                     append_to: wrapper_element,
                     class: 'gantt',
@@ -1086,11 +1241,16 @@ var Gantt = (function () {
                 this.$svg.classList.add('gantt');
             }
 
+            // names element
+            this.$titles = document.createElement('div');
+            this.$titles.classList.add('names');
+
             // wrapper element
             this.$container = document.createElement('div');
             this.$container.classList.add('gantt-container');
 
             const parent_element = this.$svg.parentElement;
+            parent_element.appendChild(this.$titles);
             parent_element.appendChild(this.$container);
             this.$container.appendChild(this.$svg);
 
@@ -1098,6 +1258,81 @@ var Gantt = (function () {
             this.popup_wrapper = document.createElement('div');
             this.popup_wrapper.classList.add('popup-wrapper');
             this.$container.appendChild(this.popup_wrapper);
+
+            let mouseDown = false;
+            let startX, scrollLeft;
+            let container = this.$container;
+
+            // console.log(this);
+
+            // console.log(wrapper_element);
+            let startDragging = function (e) {
+                // console.log(container);
+                mouseDown = true;
+                startX = e.pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+            };
+            let stopDragging = function (event) {
+                mouseDown = false;
+            };
+            $.on(
+                container,
+                'mousemove',
+                '.grid, .grid-background',
+                (e, element) => {
+                    // console.log(container);
+                    if (!mouseDown) {
+                        return;
+                    }
+                    const x = e.pageX - container.offsetLeft;
+                    // console.log(x);
+                    const scroll = x - startX;
+                    container.scrollLeft = scrollLeft - scroll;
+                }
+            );
+
+            $.on(container, 'mousedown', '.grid, .grid-background', startDragging);
+            $.on(container, 'mouseup', '.grid, .grid-background', stopDragging);
+            $.on(container, 'mouseleave', '.gantt-container', stopDragging);
+
+            $.on(this.$titles, 'click', '.tasks, .task', (event, element) => {
+                // console.log(event, 'event');
+                // console.log(element, 'element');
+                this.scroll_to_task(element.getAttribute('data-value'));
+                // console.log(element.getAttribute('data-value'));
+            });
+        }
+
+        make_grid_names() {
+            const rows_layer = createSVG('g', { append_to: this.layers.grid });
+            const lines_layer = createSVG('g', { append_to: this.layers.grid });
+
+            const row_width = this.dates.length * this.options.column_width;
+            const row_height = this.options.bar_height + this.options.padding;
+
+            let row_y = this.options.header_height + this.options.padding / 2;
+
+            for (let task of this.tasks) {
+                createSVG('rect', {
+                    x: 0,
+                    y: row_y,
+                    width: row_width,
+                    height: row_height,
+                    class: 'grid-row',
+                    append_to: rows_layer,
+                });
+
+                createSVG('line', {
+                    x1: 0,
+                    y1: row_y + row_height,
+                    x2: row_width,
+                    y2: row_y + row_height,
+                    class: 'row-line',
+                    append_to: lines_layer,
+                });
+
+                row_y += this.options.bar_height + this.options.padding;
+            }
         }
 
         setup_options(options) {
@@ -1114,7 +1349,7 @@ var Gantt = (function () {
                 date_format: 'YYYY-MM-DD',
                 popup_trigger: 'click',
                 custom_popup_html: null,
-                language: 'en',
+                language: 'et',
             };
             this.options = Object.assign({}, default_options, options);
         }
@@ -1307,6 +1542,7 @@ var Gantt = (function () {
             this.map_arrows_on_bars();
             this.set_width();
             this.set_scroll_position();
+            this.display_names(this.options, this.tasks);
         }
 
         setup_layers() {
@@ -1347,7 +1583,8 @@ var Gantt = (function () {
             });
 
             $.attr(this.$svg, {
-                height: grid_height + this.options.padding + 100,
+                height: grid_height + 100,
+                // height: '100%',
                 width: '100%',
             });
         }
@@ -1419,10 +1656,7 @@ var Gantt = (function () {
                     tick_class += ' thick';
                 }
                 // thick ticks for quarters
-                if (
-                    this.view_is(VIEW_MODE.MONTH) &&
-                    (date.getMonth() + 1) % 3 === 0
-                ) {
+                if (this.view_is(VIEW_MODE.MONTH) && date.getMonth() % 3 === 0) {
                     tick_class += ' thick';
                 }
 
@@ -1653,6 +1887,32 @@ var Gantt = (function () {
 
             const hours_before_first_task = date_utils.diff(
                 this.get_oldest_starting_date(),
+                this.gantt_start,
+                'hour'
+            );
+
+            const scroll_pos =
+                (hours_before_first_task / this.options.step) *
+                    this.options.column_width -
+                this.options.column_width;
+
+            parent_element.scrollLeft = scroll_pos;
+        }
+
+        scroll_to_task(taskId) {
+            // return this.tasks
+            // .map((task) => task._start)
+            // .reduce((prev_date, cur_date) =>
+            //     cur_date <= prev_date ? cur_date : prev_date
+            // );
+
+            const taskToScroll = this.tasks.find((task) => task.id === taskId);
+            console.log(taskToScroll);
+            const parent_element = this.$svg.parentElement;
+            if (!parent_element) return;
+
+            const hours_before_first_task = date_utils.diff(
+                taskToScroll._start,
                 this.gantt_start,
                 'hour'
             );
@@ -1919,6 +2179,19 @@ var Gantt = (function () {
                 );
             }
             this.popup.show(options);
+        }
+
+        display_names(options, tasks) {
+            console.log('display_names triggered');
+            if (!this.names) {
+                this.names = new Names(
+                    this.$titles,
+                    this.options.custom_popup_html,
+                    this.options,
+                    this.tasks
+                );
+            }
+            this.names.make(options, tasks);
         }
 
         hide_popup() {
