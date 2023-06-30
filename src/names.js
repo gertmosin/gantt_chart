@@ -8,15 +8,18 @@ export default class Names {
     }
 
     makeHeader() {
-        const header = document.createElement('div');
-        const headerText = document.createElement('span');
-        header.classList.add('header');
-        header.style.height = this.gantt.options.header_height + 10 + 'px';
-        headerText.innerText = this.gantt.options.custom_names.header;
+        if(this.gantt){
 
-        header.appendChild(headerText);
+            const header = document.createElement('div');
+            const headerText = document.createElement('span');
+            header.classList.add('header');
+            header.style.height = this.gantt.options.header_height + 10 + 'px';
+            headerText.innerText = this.gantt.options.custom_names.header;
 
-        return header;
+            header.appendChild(headerText);
+
+            return header;
+        }
     }
 
     make() {
