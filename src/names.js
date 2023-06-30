@@ -56,7 +56,7 @@ export default class Names {
 
         const nameField = document.createElement('span');
 
-        nameField.textContent = this.task?.name;
+        nameField.innerText = this.task?.name;
 
         parentDiv.classList.add('tasks');
 
@@ -67,7 +67,7 @@ export default class Names {
 
         this.gantt.options.custom_names.buttons?.forEach(button => {
             const actionButton = document.createElement('button');
-            actionButton.textContent = button.label;
+            actionButton.innerText = button.label;
             $.on(actionButton, 'click', (e) => {
                 this.gantt.trigger_event(button?.trigger, [this.task]);
             });
