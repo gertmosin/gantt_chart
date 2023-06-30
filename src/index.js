@@ -1123,7 +1123,7 @@ class Names {
         parentDiv.classList.add('tasks');
 
         taskDiv.classList.add('task');
-        taskDiv.style.height = `${row_height}px`;
+        taskDiv.style.height = row_height + 'px';
         taskDiv.setAttribute('data-value', this.task?.id);
         taskDiv.appendChild(nameField);
 
