@@ -1117,14 +1117,14 @@ class Names {
 
         const nameField = document.createElement('span');
 
-        // nameField.innerText = this.task?.name;
-        nameField.innerText = 'test';
+        nameField.innerText = this.task.name;
+        // nameField.innerText = 'test';
 
         parentDiv.classList.add('tasks');
 
         taskDiv.classList.add('task');
         taskDiv.style.height = row_height + 'px';
-        taskDiv.setAttribute('data-value', this.task?.id);
+        taskDiv.setAttribute('data-value', this.task.id);
         taskDiv.appendChild(nameField);
 
         this.gantt.options.custom_names.buttons?.forEach(button => {
