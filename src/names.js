@@ -43,7 +43,7 @@ export default class Names {
             const actionButton = document.createElement('button');
             actionButton.innerText = button.label;
             $.on(actionButton, 'click', (e) => {
-                this.gantt.trigger_event(button?.trigger, [this.task]);
+                this.gantt.trigger_event(button.trigger, [this.task]);
             });
 
             parentDiv.appendChild(actionButton);
