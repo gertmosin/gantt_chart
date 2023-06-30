@@ -684,15 +684,10 @@ export default class Gantt {
         this.$titles.appendChild(header.makeHeader());
         this.names = this.tasks.map((task) => {
             const name = new Names(this, task);
-
             const elem = name.make();
-            console.log(elem);
-            // console.log(name);
             this.$titles.appendChild(elem);
-            // this.layers.bar.appendChild(bar.group);
             return name;
         });
-        console.log(this.names);
     }
 
     make_arrows() {
