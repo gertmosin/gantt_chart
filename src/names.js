@@ -29,7 +29,8 @@ export default class Names {
 
         const nameField = document.createElement('span');
 
-        nameField.innerText = this.task?.name;
+        // nameField.innerText = this.task?.name;
+        nameField.innerText = 'test';
 
         parentDiv.classList.add('tasks');
 
