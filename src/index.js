@@ -171,23 +171,7 @@ export default class Gantt {
             language: 'et',
             custom_names: {
                 header: 'Items',
-                buttons: [], // label:string, trigger:string
-
-                // b1: {
-                //     label: 'Button 1',
-                //     active: false
-                // },
-                // b2: {
-                //     label: 'Button 2',
-                //     active: false
-                // },
-                // b3: {
-                //     label: 'Button 3',
-                //     active: false
-                // },
-                // first_button_label: "Button 1",
-                // second_button_label: "Button 2",
-                // third_button_label: "Button 3"
+                buttons: [], // label:string, trigger:string, // class: string
             }
         };
         this.options = Object.assign({}, default_options, options);

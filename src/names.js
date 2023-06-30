@@ -47,6 +47,7 @@ export default class Names {
 
         this.gantt.options.custom_names.buttons.forEach(button => {
             const actionButton = document.createElement('button');
+            actionButton.classList.add(button.class);
             actionButton.innerText = button.label;
             $.on(actionButton, 'click', (e) => {
                 this.gantt.trigger_event(button.trigger, [this.task]);
