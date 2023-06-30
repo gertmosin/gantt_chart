@@ -21,6 +21,9 @@ export default class Names {
 
     make() {
 
+        if(this.task){
+
+      
         const row_height =
             this.gantt.options.bar_height + this.gantt.options.padding;
 
@@ -29,9 +32,9 @@ export default class Names {
 
         const nameField = document.createElement('span');
 
-        nameField.innerText = this.task.name;
-        // nameField.innerText = 'test';
 
+        nameField.innerText = this.task.name;
+        
         parentDiv.classList.add('tasks');
 
         taskDiv.classList.add('task');
@@ -53,7 +56,7 @@ export default class Names {
  
 
         return parentDiv;
-
+        }
     }
 
 }
