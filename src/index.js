@@ -3,7 +3,7 @@ import { $, createSVG, createCanvas } from './svg_utils';
 import Bar from './bar';
 import Arrow from './arrow';
 import Popup from './popup';
-import Names from './names';
+// import Names from './names';
 
 import './gantt.scss';
 
@@ -680,14 +680,14 @@ export default class Gantt {
     }
 
     make_names() {
-        const header = new Names(this);
-        this.$titles.appendChild(header.makeHeader());
-        this.names = this.tasks.map((task) => {
-            const name = new Names(this, task);
-            const elem = name.make();
-            this.$titles.appendChild(elem);
-            return name;
-        });
+        // const header = new Names(this);
+        // this.$titles.appendChild(header.makeHeader());
+        // this.names = this.tasks.map((task) => {
+        //     const name = new Names(this, task);
+        //     const elem = name.make();
+        //     this.$titles.appendChild(elem);
+        //     return name;
+        // });
     }
 
     make_arrows() {
