@@ -665,7 +665,7 @@ export default class Gantt {
     }
 
     make_names() {
-        this.$titles.children = [];
+        this.$titles.innerHTML = "";
         const header = new Names(this);
         this.$titles.appendChild(header.makeHeader());
         this.names = this.tasks.map((task) => {
