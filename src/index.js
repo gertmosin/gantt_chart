@@ -255,6 +255,7 @@ export default class Gantt {
     refresh(tasks) {
         this.setup_tasks(tasks);
         this.change_view_mode();
+        this.make_names();
     }
 
     change_view_mode(mode = this.options.view_mode) {
@@ -1019,20 +1020,6 @@ export default class Gantt {
         this.popup.show(options);
     }
 
-    // display_names(options, tasks) {
-    //     console.log('display_names triggered');
-    //     if (!this.names) {
-    //         this.names = new Names(
-    //             this.$titles,
-    //             this.options.custom_popup_html,
-    //             this.options,
-    //             this.tasks,
-    //             this
-    //         );
-    //     }
-    //     this.names.make(options, tasks);
-    // }
-
     hide_popup() {
         this.popup && this.popup.hide();
     }
@@ -1073,60 +1060,3 @@ function generate_id(task) {
     return task.name + '_' + Math.random().toString(36).slice(2, 12);
 }
 
-// class Names {
-//     constructor(gantt, task) {
-//         this.task = task;
-//         this.gantt = gantt;
-//         this.make();
-//     }
-
-//     makeHeader() {
-//         const header = document.createElement('div');
-//         const headerText = document.createElement('span');
-//         header.classList.add('header');
-//         header.style.height = this.gantt.options.header_height + 10 + 'px';
-//         headerText.innerText = this.gantt.options.custom_names.header;
-
-//         header.appendChild(headerText);
-
-//         return header;
-//     }
-
-//     make() {
-
-//         const row_height =
-//             this.gantt.options.bar_height + this.gantt.options.padding;
-
-//         const parentDiv = document.createElement('div');
-//         const taskDiv = document.createElement('div');
-
-//         const nameField = document.createElement('span');
-
-//         nameField.innerText = this.task.name;
-//         // nameField.innerText = 'test';
-
-//         parentDiv.classList.add('tasks');
-
-//         taskDiv.classList.add('task');
-//         taskDiv.style.height = row_height + 'px';
-//         taskDiv.setAttribute('data-value', this.task.id);
-//         taskDiv.appendChild(nameField);
-
-//         this.gantt.options.custom_names.buttons?.forEach(button => {
-//             const actionButton = document.createElement('button');
-//             actionButton.innerText = button.label;
-//             $.on(actionButton, 'click', (e) => {
-//                 this.gantt.trigger_event(button?.trigger, [this.task]);
-//             });
-
-//             parentDiv.appendChild(actionButton);
-//         })
-
-//         parentDiv.append(taskDiv);
- 
-
-//         return parentDiv;
-
-//     }
-
-// }
