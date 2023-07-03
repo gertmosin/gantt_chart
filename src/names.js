@@ -25,7 +25,7 @@ export default class Names {
     make() {
 
         if(this.task){
-
+        
       
         const row_height =
             this.gantt.options.bar_height + this.gantt.options.padding;
