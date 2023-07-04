@@ -1093,13 +1093,6 @@ var Gantt = (function () {
     }
 
     class Names {
-        // constructor(parent, custom_html, options, tasks, gantt) {
-        //     this.parent = parent;
-        //     this.custom_html = custom_html;
-        //     this.gantt = gantt;
-        //     this.make(options, tasks);
-        //     console.log(tasks);
-        // }
         constructor(gantt, task) {
             this.task = task;
             this.gantt = gantt;
@@ -1107,202 +1100,65 @@ var Gantt = (function () {
         }
 
         makeHeader() {
-            const header = document.createElement('div');
-            const headerText = document.createElement('span');
-            header.classList.add('header');
-            // const row_height = this.gantt.options.bar_height + this.gantt.options.padding;
-            header.style.height = this.gantt.options.header_height + 10 + 'px';
-            headerText.innerText = this.gantt.options.custom_names.header;
+            if(this.gantt){
 
-            header.appendChild(headerText);
+                const header = document.createElement('div');
+                const headerText = document.createElement('span');
+                header.classList.add('header');
+                header.style.height = this.gantt.options.header_height + 10 + 'px';
+                headerText.innerText = this.gantt.options.custom_names.header;
 
-            return header;
+                header.appendChild(headerText);
+
+                return header;
+            }
         }
 
         make() {
-            // this.parent.innerHTML = `
-            //     <div class="header"><span>Items</span></div>
-            //     <div class="tasks"></div>
-            // `;
 
-            // this.hide();
-            // this.header = this.parent.querySelector('.header');
-            // this.tasksElement = this.parent.querySelector('.tasks');
-            // this.tasksElement.style.display = 'flex';
-            // this.tasksElement.style.flexDirection = 'column';
-            // this.title = this.parent.querySelector('.title');
-            // this.subtitle = this.parent.querySelector('.subtitle');
-            // this.pointer = this.parent.querySelector('.pointer');
-
-            // console.log(this.tasksElement);
-
-            // const taskElements = [];
+            if(this.task){
+            
+          
             const row_height =
                 this.gantt.options.bar_height + this.gantt.options.padding;
-
-            // for (let i = 0; i < tasks?.length; i++) {
-            // console.log(tasks[i]);
 
             const parentDiv = document.createElement('div');
             const taskDiv = document.createElement('div');
 
             const nameField = document.createElement('span');
 
-            nameField.textContent = this.task?.name;
 
+            nameField.innerText = this.task.name;
+            
             parentDiv.classList.add('tasks');
 
             taskDiv.classList.add('task');
-            taskDiv.style.height = `${row_height}px`;
-            taskDiv.setAttribute('data-value', this.task?.id);
+            taskDiv.style.height = row_height + 'px';
+            taskDiv.setAttribute('data-value', this.task.id);
             taskDiv.appendChild(nameField);
 
-            this.gantt.options.custom_names.buttons?.forEach(button => {
+            this.gantt.options.custom_names.buttons.forEach(button => {
                 const actionButton = document.createElement('button');
-                actionButton.textContent = button.label;
+                const classes = button.class.split(" ");
+                classes.forEach(className => {
+                    actionButton.classList.add(className);
+                });
+                
+                actionButton.innerText = button.label;
                 $.on(actionButton, 'click', (e) => {
-                    this.gantt.trigger_event(button?.trigger, [this.task]);
+                    this.gantt.trigger_event(button.trigger, [this.task]);
                 });
 
                 parentDiv.appendChild(actionButton);
             });
 
-            // b1.textContent = this.gantt.options.custom_names.b1.label;
-            // b2.textContent = this.gantt.options.custom_names.b2.label;
-            // b3.textContent = this.gantt.options.custom_names.b3.label;
-            //
-            // $.on(b1, 'click', (e) => {
-            //     // console.log(this.gantt);
-            //     this.gantt.trigger_event('action1', [this.task]);
-            // });
-            //
-            // $.on(b2, 'click', (e) => {
-            //     // console.log(this.gantt);
-            //     this.gantt.trigger_event('action2', [this.task]);
-            // });
-            //
-            // $.on(b3, 'click', (e) => {
-            //     // console.log(this.gantt);
-            //     this.gantt.trigger_event('action3', [this.task]);
-            // });
-
             parentDiv.append(taskDiv);
-            // parentDiv.append(editButton, taskDiv);
+     
 
             return parentDiv;
-
-            // console.log(emptyElement);
-            // const taskElement = document.createElement('span');
-            // taskElement.classList.add('single-task');
-            // taskElement.innerText = tasks[i].name;
-            // this.tasksElement.append(taskElement);
-            // this.tasksElement.innerHTML = emptyElement;
-            // }
-
-            // console.log(this.$svg);
-            // this.tasksElement.innerHTML = taskElements.join(' ');
-            // this.header.style.height = options.header_height + 10 + 'px';
-            // this.title.innerText = 'asdjasdasdasd';
-
-            // const taskButton = this.parent.querySelector('#task_button');
-            // $.on(taskButton, 'click', (e) => {
-            //     console.log(this.gantt);
-            //     this.gantt.trigger_event('edit', [this.gantt.get_task]);
-            // });
+            }
         }
 
-        // make(options, tasks) {
-        //     this.parent.innerHTML = `
-        //         <div class="header"><span>Items</span></div>
-        //         <div class="tasks"></div>
-        //     `;
-
-        //     // this.hide();
-        //     this.header = this.parent.querySelector('.header');
-        //     this.tasksElement = this.parent.querySelector('.tasks');
-        //     // this.tasksElement.style.display = 'flex';
-        //     // this.tasksElement.style.flexDirection = 'column';
-        //     // this.title = this.parent.querySelector('.title');
-        //     // this.subtitle = this.parent.querySelector('.subtitle');
-        //     // this.pointer = this.parent.querySelector('.pointer');
-
-        //     // console.log(this.tasksElement);
-
-        //     const taskElements = [];
-        //     const row_height = options.bar_height + options.padding;
-
-        //     for (let i = 0; i < tasks?.length; i++) {
-        //         // console.log(tasks[i]);
-        //         taskElements.push(
-        //             `<div><button id="task_button">trigger</button><div class='task' data-value='${tasks[i].id}' style='height: ${row_height}px;'><span>${tasks[i].name}</span></div></div>`
-        //         );
-        //         // console.log(emptyElement);
-        //         // const taskElement = document.createElement('span');
-        //         // taskElement.classList.add('single-task');
-        //         // taskElement.innerText = tasks[i].name;
-        //         // this.tasksElement.append(taskElement);
-        //         // this.tasksElement.innerHTML = emptyElement;
-        //     }
-
-        //     console.log(this.$svg);
-        //     this.tasksElement.innerHTML = taskElements.join(' ');
-        //     this.header.style.height = options.header_height + 10 + 'px';
-        //     // this.title.innerText = 'asdjasdasdasd';
-
-        //     const taskButton = this.parent.querySelector('#task_button');
-        //     $.on(taskButton, 'click', (e) => {
-        //         console.log(this.gantt);
-        //         this.gantt.trigger_event('edit', [this.gantt.get_task]);
-        //     });
-        // }
-
-        // show(options) {
-        //     if (!options.target_element) {
-        //         throw new Error('target_element is required to show popup');
-        //     }
-        //     if (!options.position) {
-        //         options.position = 'left';
-        //     }
-        //     const target_element = options.target_element;
-
-        //     if (this.custom_html) {
-        //         let html = this.custom_html(options.task);
-        //         html += '<div class="pointer"></div>';
-        //         this.parent.innerHTML = html;
-        //         this.pointer = this.parent.querySelector('.pointer');
-        //     } else {
-        //         // set data
-        //         this.title.innerHTML = options.title;
-        //         this.subtitle.innerHTML = options.subtitle;
-        //         this.parent.style.width = this.parent.clientWidth + 'px';
-        //     }
-
-        //     // set position
-        //     let position_meta;
-        //     if (target_element instanceof HTMLElement) {
-        //         position_meta = target_element.getBoundingClientRect();
-        //     } else if (target_element instanceof SVGElement) {
-        //         position_meta = options.target_element.getBBox();
-        //     }
-
-        //     if (options.position === 'left') {
-        //         this.parent.style.left =
-        //             position_meta.x + (position_meta.width + 10) + 'px';
-        //         this.parent.style.top = position_meta.y + 'px';
-
-        //         this.pointer.style.transform = 'rotateZ(90deg)';
-        //         this.pointer.style.left = '-7px';
-        //         this.pointer.style.top = '2px';
-        //     }
-
-        //     // show
-        //     this.parent.style.opacity = 1;
-        // }
-
-        // hide() {
-        //     this.parent.style.opacity = 0;
-        //     this.parent.style.left = 0;
-        // }
     }
 
     const VIEW_MODE = {
@@ -1469,23 +1325,7 @@ var Gantt = (function () {
                 language: 'et',
                 custom_names: {
                     header: 'Items',
-                    buttons: [], // label:string, trigger:string
-
-                    // b1: {
-                    //     label: 'Button 1',
-                    //     active: false
-                    // },
-                    // b2: {
-                    //     label: 'Button 2',
-                    //     active: false
-                    // },
-                    // b3: {
-                    //     label: 'Button 3',
-                    //     active: false
-                    // },
-                    // first_button_label: "Button 1",
-                    // second_button_label: "Button 2",
-                    // third_button_label: "Button 3"
+                    buttons: [], // label:string, trigger:string, // class: string
                 }
             };
             this.options = Object.assign({}, default_options, options);
@@ -1569,6 +1409,7 @@ var Gantt = (function () {
         refresh(tasks) {
             this.setup_tasks(tasks);
             this.change_view_mode();
+                // this.make_names();
         }
 
         change_view_mode(mode = this.options.view_mode) {
@@ -1978,19 +1819,15 @@ var Gantt = (function () {
         }
 
         make_names() {
+            this.$titles.innerHTML = "";
             const header = new Names(this);
             this.$titles.appendChild(header.makeHeader());
             this.names = this.tasks.map((task) => {
                 const name = new Names(this, task);
-
                 const elem = name.make();
-                console.log(elem);
-                // console.log(name);
                 this.$titles.appendChild(elem);
-                // this.layers.bar.appendChild(bar.group);
                 return name;
             });
-            console.log(this.names);
         }
 
         make_arrows() {
@@ -2336,20 +2173,6 @@ var Gantt = (function () {
             }
             this.popup.show(options);
         }
-
-        // display_names(options, tasks) {
-        //     console.log('display_names triggered');
-        //     if (!this.names) {
-        //         this.names = new Names(
-        //             this.$titles,
-        //             this.options.custom_popup_html,
-        //             this.options,
-        //             this.tasks,
-        //             this
-        //         );
-        //     }
-        //     this.names.make(options, tasks);
-        // }
 
         hide_popup() {
             this.popup && this.popup.hide();
