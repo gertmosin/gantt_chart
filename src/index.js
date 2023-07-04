@@ -68,10 +68,22 @@ export default class Gantt {
         this.$container = document.createElement('div');
         this.$container.classList.add('gantt-container');
 
+        this.$svgHeader = document.createElement('div');
+        this.$svgHeader.classList.add('ganttchart-header');
+        // this.$svgHeader.style.height = '60px';
+        this.$container.appendChild(this.$svgHeader);
+
+        this.$headerSvg = createSVG('svg', {
+            append_to: this.$svgHeader,
+            class: 'gantt',
+        });
+
         const parent_element = this.$svg.parentElement;
         parent_element.appendChild(this.$titles);
         parent_element.appendChild(this.$container);
         this.$container.appendChild(this.$svg);
+
+
 
         // popup wrapper
         this.popup_wrapper = document.createElement('div');
@@ -372,13 +384,25 @@ export default class Gantt {
 
     setup_layers() {
         this.layers = {};
+        this.newLayers = {};
         const layers = ['grid', 'date', 'arrow', 'progress', 'bar', 'details'];
+        const newLayers = ['grid', 'date'];
         // make group layers
         for (let layer of layers) {
-            this.layers[layer] = createSVG('g', {
-                class: layer,
-                append_to: this.$svg,
-            });
+            if(layer !== 'date'){
+                this.layers[layer] = createSVG('g', {
+                    class: layer,
+                    append_to: this.$svg,
+                });
+            }
+        }
+
+        for (let layer of newLayers){
+                            this.newLayers[layer] = createSVG('g', {
+                                class: layer,
+                                append_to: this.$headerSvg,
+                            });
+                    
         }
     }
 
@@ -412,6 +436,11 @@ export default class Gantt {
             // height: '100%',
             width: '100%',
         });
+        $.attr(this.$headerSvg, {
+            height: this.options.header_height + 10,
+            // height: '100%',
+            width: '100%',
+        });
     }
 
     make_grid_rows() {
@@ -421,7 +450,8 @@ export default class Gantt {
         const row_width = this.dates.length * this.options.column_width;
         const row_height = this.options.bar_height + this.options.padding;
 
-        let row_y = this.options.header_height + this.options.padding / 2;
+        // let row_y = this.options.header_height + this.options.padding / 2;
+        let row_y = 0;
 
         for (let task of this.tasks) {
             createSVG('rect', {
@@ -447,6 +477,17 @@ export default class Gantt {
     }
 
     make_grid_header() {
+        // const header_width = this.dates.length * this.options.column_width;
+        // const header_height = this.options.header_height + 10;
+        // createSVG('rect', {
+        //     x: 0,
+        //     y: 0,
+        //     width: header_width,
+        //     height: header_height,
+        //     class: 'grid-header',
+        //     append_to: this.layers.grid,
+        // });
+
         const header_width = this.dates.length * this.options.column_width;
         const header_height = this.options.header_height + 10;
         createSVG('rect', {
@@ -455,7 +496,7 @@ export default class Gantt {
             width: header_width,
             height: header_height,
             class: 'grid-header',
-            append_to: this.layers.grid,
+            append_to: this.newLayers.grid,
         });
     }
 
@@ -531,12 +572,39 @@ export default class Gantt {
 
     make_dates() {
         for (let date of this.get_dates_to_draw()) {
+            // createSVG('text', {
+            //     x: date.lower_x,
+            //     y: date.lower_y,
+            //     innerHTML: date.lower_text,
+            //     class: 'lower-text',
+            //     append_to: this.layers.date,
+            // });
+
+            // if (date.upper_text) {
+            //     const $upper_text = createSVG('text', {
+            //         x: date.upper_x,
+            //         y: date.upper_y,
+            //         innerHTML: date.upper_text,
+            //         class: 'upper-text',
+            //         append_to: this.layers.date,
+            //     });
+
+            //     // remove out-of-bound dates
+            //     if (
+            //         $upper_text.getBBox().x2 > this.layers.grid.getBBox().width
+            //     ) {
+            //         $upper_text.remove();
+            //     }
+            // }
+
+            //test 
+            const daatum = document.querySelector('.date');
             createSVG('text', {
                 x: date.lower_x,
                 y: date.lower_y,
                 innerHTML: date.lower_text,
                 class: 'lower-text',
-                append_to: this.layers.date,
+                append_to: daatum,
             });
 
             if (date.upper_text) {
@@ -545,7 +613,7 @@ export default class Gantt {
                     y: date.upper_y,
                     innerHTML: date.upper_text,
                     class: 'upper-text',
-                    append_to: this.layers.date,
+                    append_to: daatum,
                 });
 
                 // remove out-of-bound dates
@@ -715,6 +783,7 @@ export default class Gantt {
             .getAttribute('width');
         if (cur_width < actual_width) {
             this.$svg.setAttribute('width', actual_width);
+            this.$headerSvg.setAttribute('width', actual_width);
         }
     }
 

@@ -14,6 +14,7 @@ export default class Names {
             const headerText = document.createElement('span');
             header.classList.add('header');
             header.style.height = this.gantt.options.header_height + 10 + 'px';
+            // header.style.borderBottom = '2px solid #ebeff2';
             headerText.innerText = this.gantt.options.custom_names.header;
 
             header.appendChild(headerText);

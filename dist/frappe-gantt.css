@@ -1,3 +1,9 @@
+.gantt--header {
+  fill: #F7F9FC;
+  stroke: #e0e0e0;
+  stroke-width: 1.4;
+}
+
 .gantt-target {
   display: flex;
   background-color: #fff;
@@ -59,8 +65,6 @@
 }
 .gantt .grid-header {
   fill: #F7F9FC;
-  stroke: #e0e0e0;
-  stroke-width: 1.4;
 }
 .gantt .grid-row {
   fill: #ffffff;

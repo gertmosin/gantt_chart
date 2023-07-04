@@ -12,6 +12,12 @@ $text-color: #333 !default;
 $blue: #5dbe75 !default;
 $handle-color: #ddd !default;
 
+.gantt--header{
+    fill: #F7F9FC;
+    stroke: $border-color;
+    stroke-width: 1.4;
+}
+
 .gantt-target {
     display: flex;
     background-color: #fff;
@@ -113,8 +119,8 @@ $handle-color: #ddd !default;
     .grid-header {
         // fill: #ffffff;
         fill: #F7F9FC;
-        stroke: $border-color;
-        stroke-width: 1.4;
+        // stroke: $border-color;
+        // stroke-width: 1.4;
     }
     .grid-row {
         fill: #ffffff;
