@@ -1037,6 +1037,7 @@ export default class Gantt {
      * @memberof Gantt
      */
     get_oldest_starting_date() {
+        return new Date();
         return this.tasks
             .map((task) => task._start)
             .reduce((prev_date, cur_date) =>

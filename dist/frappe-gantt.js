@@ -2191,11 +2191,7 @@ var Gantt = (function () {
          * @memberof Gantt
          */
         get_oldest_starting_date() {
-            return this.tasks
-                .map((task) => task._start)
-                .reduce((prev_date, cur_date) =>
-                    cur_date <= prev_date ? cur_date : prev_date
-                );
+            return new Date();
         }
 
         /**
