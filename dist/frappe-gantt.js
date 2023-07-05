@@ -702,7 +702,7 @@ var Gantt = (function () {
                 this.group.classList.add('active');
             });
 
-            $.on(this.group, 'dblclick', (e) => {
+            $.on(this.group, 'click', (e) => {
                 if (this.action_completed) {
                     // just finished a move action, wait for a few seconds
                     return;
@@ -1071,12 +1071,11 @@ var Gantt = (function () {
             } else if (target_element instanceof SVGElement) {
                 position_meta = options.target_element.getBBox();
             }
-
             if (options.position === 'left') {
                 this.parent.style.left =
                     position_meta.x + (position_meta.width + 10) + 'px';
                     // this.parent.style.top = position_meta.y + 'px';
-                this.parent.style.top = position_meta.y + 150 + 'px';
+                this.parent.style.top = position_meta.y + 60 + 'px';
 
                 this.pointer.style.transform = 'rotateZ(90deg)';
                 this.pointer.style.left = '-7px';
@@ -1245,7 +1244,8 @@ var Gantt = (function () {
             // popup wrapper
             this.popup_wrapper = document.createElement('div');
             this.popup_wrapper.classList.add('popup-wrapper');
-            this.$container.appendChild(this.popup_wrapper);
+            // this.$container.appendChild(this.popup_wrapper);
+            this.$svgHeader.appendChild(this.popup_wrapper);
 
             let mouseDown = false;
             let startX, scrollLeft;
