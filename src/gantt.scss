@@ -18,6 +18,11 @@ $handle-color: #ddd !default;
     stroke-width: 1.4;
 }
 
+.ganttchart-header{
+    position: sticky;
+    top: 0;
+}
+
 .gantt-target {
     display: flex;
     background-color: #fff;
@@ -238,14 +243,18 @@ $handle-color: #ddd !default;
 }
 
 .gantt-container {
-    position: relative;
-    overflow: auto;
+
+    // position: relative;
+        // overflow: auto;
+        display: flow-root;
     font-size: 12px;
     overflow-x: hidden;
+    // overflow-y: scroll;
     // cursor: move;
     user-select: none;
     // border-radius: 10px;
     border-top-right-radius: 10px;
+    // width: 100%;
 
     .popup-wrapper {
         position: absolute;

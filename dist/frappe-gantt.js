@@ -1075,7 +1075,8 @@ var Gantt = (function () {
             if (options.position === 'left') {
                 this.parent.style.left =
                     position_meta.x + (position_meta.width + 10) + 'px';
-                this.parent.style.top = position_meta.y + 'px';
+                    // this.parent.style.top = position_meta.y + 'px';
+                this.parent.style.top = position_meta.y + 150 + 'px';
 
                 this.pointer.style.transform = 'rotateZ(90deg)';
                 this.pointer.style.left = '-7px';
@@ -1226,7 +1227,7 @@ var Gantt = (function () {
             this.$svgHeader = document.createElement('div');
             this.$svgHeader.classList.add('ganttchart-header');
             // this.$svgHeader.style.height = '60px';
-            this.$container.appendChild(this.$svgHeader);
+            
 
             this.$headerSvg = createSVG('svg', {
                 append_to: this.$svgHeader,
@@ -1235,6 +1236,7 @@ var Gantt = (function () {
 
             const parent_element = this.$svg.parentElement;
             parent_element.appendChild(this.$titles);
+            this.$container.appendChild(this.$svgHeader);
             parent_element.appendChild(this.$container);
             this.$container.appendChild(this.$svg);
 

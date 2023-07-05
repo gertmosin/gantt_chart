@@ -71,7 +71,7 @@ export default class Gantt {
         this.$svgHeader = document.createElement('div');
         this.$svgHeader.classList.add('ganttchart-header');
         // this.$svgHeader.style.height = '60px';
-        this.$container.appendChild(this.$svgHeader);
+        
 
         this.$headerSvg = createSVG('svg', {
             append_to: this.$svgHeader,
@@ -80,6 +80,7 @@ export default class Gantt {
 
         const parent_element = this.$svg.parentElement;
         parent_element.appendChild(this.$titles);
+        this.$container.appendChild(this.$svgHeader);
         parent_element.appendChild(this.$container);
         this.$container.appendChild(this.$svg);
 

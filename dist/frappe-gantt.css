@@ -4,6 +4,11 @@
   stroke-width: 1.4;
 }
 
+.ganttchart-header {
+  position: sticky;
+  top: 0;
+}
+
 .gantt-target {
   display: flex;
   background-color: #fff;
@@ -164,8 +169,7 @@
 }
 
 .gantt-container {
-  position: relative;
-  overflow: auto;
+  display: flow-root;
   font-size: 12px;
   overflow-x: hidden;
   user-select: none;
