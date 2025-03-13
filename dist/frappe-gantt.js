@@ -1106,7 +1106,10 @@ var Gantt = (function () {
                 const headerText = document.createElement('span');
                 header.classList.add('header');
                 header.style.height = this.gantt.options.header_height + 10 + 'px';
+<<<<<<< HEAD
                 // header.style.borderBottom = '2px solid #ebeff2';
+=======
+>>>>>>> before-headers
                 headerText.innerText = this.gantt.options.custom_names.header;
 
                 header.appendChild(headerText);
@@ -1424,7 +1427,11 @@ var Gantt = (function () {
         refresh(tasks) {
             this.setup_tasks(tasks);
             this.change_view_mode();
+<<<<<<< HEAD
                 // this.make_names();
+=======
+            this.make_names();
+>>>>>>> before-headers
         }
 
         change_view_mode(mode = this.options.view_mode) {

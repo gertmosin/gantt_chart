@@ -60,6 +60,10 @@
   align-items: center;
   width: 100%;
   flex-grow: 1;
+<<<<<<< HEAD
+=======
+  justify-content: flex-end;
+>>>>>>> before-headers
   cursor: pointer;
 }
 .gantt .grid {
