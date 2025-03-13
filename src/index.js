@@ -386,9 +386,9 @@ export default class Gantt {
 
     setup_layers() {
         this.layers = {};
-        this.newLayers = {};
+        // this.newLayers = {};
         const layers = ['grid', 'date', 'arrow', 'progress', 'bar', 'details'];
-        const newLayers = ['grid', 'date'];
+        // const newLayers = ['grid', 'date'];
         // make group layers
         for (let layer of layers) {
             if(layer !== 'date'){
@@ -399,8 +399,8 @@ export default class Gantt {
             }
         }
 
-        for (let layer of newLayers){
-                            this.newLayers[layer] = createSVG('g', {
+        for (let layer of layers){
+                            this.layers[layer] = createSVG('g', {
                                 class: layer,
                                 append_to: this.$headerSvg,
                             });
@@ -479,17 +479,6 @@ export default class Gantt {
     }
 
     make_grid_header() {
-        // const header_width = this.dates.length * this.options.column_width;
-        // const header_height = this.options.header_height + 10;
-        // createSVG('rect', {
-        //     x: 0,
-        //     y: 0,
-        //     width: header_width,
-        //     height: header_height,
-        //     class: 'grid-header',
-        //     append_to: this.layers.grid,
-        // });
-
         const header_width = this.dates.length * this.options.column_width;
         const header_height = this.options.header_height + 10;
         createSVG('rect', {
@@ -498,8 +487,19 @@ export default class Gantt {
             width: header_width,
             height: header_height,
             class: 'grid-header',
-            append_to: this.newLayers.grid,
+            append_to: this.layers.grid,
         });
+
+        // const header_width = this.dates.length * this.options.column_width;
+        // const header_height = this.options.header_height + 10;
+        // createSVG('rect', {
+        //     x: 0,
+        //     y: 0,
+        //     width: header_width,
+        //     height: header_height,
+        //     class: 'grid-header',
+        //     append_to: this.newLayers.grid,
+        // });
     }
 
     make_grid_ticks() {
@@ -574,39 +574,12 @@ export default class Gantt {
 
     make_dates() {
         for (let date of this.get_dates_to_draw()) {
-            createSVG('text', {
-                x: date.lower_x,
-                y: date.lower_y,
-                innerHTML: date.lower_text,
-                class: 'lower-text',
-                append_to: this.layers.date,
-            });
-
-            if (date.upper_text) {
-                const $upper_text = createSVG('text', {
-                    x: date.upper_x,
-                    y: date.upper_y,
-                    innerHTML: date.upper_text,
-                    class: 'upper-text',
-                    append_to: this.layers.date,
-                });
-
-                // remove out-of-bound dates
-                if (
-                    $upper_text.getBBox().x2 > this.layers.grid.getBBox().width
-                ) {
-                    $upper_text.remove();
-                }
-            }
-
-            // test 
-            // const daatum = document.querySelector('.date');
             // createSVG('text', {
             //     x: date.lower_x,
             //     y: date.lower_y,
             //     innerHTML: date.lower_text,
             //     class: 'lower-text',
-            //     append_to: daatum,
+            //     append_to: this.layers.date,
             // });
 
             // if (date.upper_text) {
@@ -615,7 +588,7 @@ export default class Gantt {
             //         y: date.upper_y,
             //         innerHTML: date.upper_text,
             //         class: 'upper-text',
-            //         append_to: daatum,
+            //         append_to: this.layers.date,
             //     });
 
             //     // remove out-of-bound dates
@@ -625,6 +598,33 @@ export default class Gantt {
             //         $upper_text.remove();
             //     }
             // }
+
+            // test 
+            const daatum = document.querySelector('.date');
+            createSVG('text', {
+                x: date.lower_x,
+                y: date.lower_y,
+                innerHTML: date.lower_text,
+                class: 'lower-text',
+                append_to: daatum,
+            });
+
+            if (date.upper_text) {
+                const $upper_text = createSVG('text', {
+                    x: date.upper_x,
+                    y: date.upper_y,
+                    innerHTML: date.upper_text,
+                    class: 'upper-text',
+                    append_to: daatum,
+                });
+
+                // remove out-of-bound dates
+                if (
+                    $upper_text.getBBox().x2 > this.layers.grid.getBBox().width
+                ) {
+                    $upper_text.remove();
+                }
+            }
         }
     }
 
