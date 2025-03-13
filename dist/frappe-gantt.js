@@ -1541,9 +1541,9 @@ var Gantt = (function () {
 
         setup_layers() {
             this.layers = {};
-            // this.newLayers = {};
+            this.newLayers = {};
             const layers = ['grid', 'date', 'arrow', 'progress', 'bar', 'details'];
-            // const newLayers = ['grid', 'date'];
+            const newLayers = ['grid', 'date'];
             // make group layers
             for (let layer of layers) {
                 if(layer !== 'date'){
@@ -1554,8 +1554,8 @@ var Gantt = (function () {
                 }
             }
 
-            for (let layer of layers){
-                                this.layers[layer] = createSVG('g', {
+            for (let layer of newLayers){
+                                this.newLayers[layer] = createSVG('g', {
                                     class: layer,
                                     append_to: this.$headerSvg,
                                 });
@@ -1634,17 +1634,6 @@ var Gantt = (function () {
         }
 
         make_grid_header() {
-            const header_width = this.dates.length * this.options.column_width;
-            const header_height = this.options.header_height + 10;
-            createSVG('rect', {
-                x: 0,
-                y: 0,
-                width: header_width,
-                height: header_height,
-                class: 'grid-header',
-                append_to: this.layers.grid,
-            });
-
             // const header_width = this.dates.length * this.options.column_width;
             // const header_height = this.options.header_height + 10;
             // createSVG('rect', {
@@ -1653,8 +1642,19 @@ var Gantt = (function () {
             //     width: header_width,
             //     height: header_height,
             //     class: 'grid-header',
-            //     append_to: this.newLayers.grid,
+            //     append_to: this.layers.grid,
             // });
+
+            const header_width = this.dates.length * this.options.column_width;
+            const header_height = this.options.header_height + 10;
+            createSVG('rect', {
+                x: 0,
+                y: 0,
+                width: header_width,
+                height: header_height,
+                class: 'grid-header',
+                append_to: this.newLayers.grid,
+            });
         }
 
         make_grid_ticks() {
