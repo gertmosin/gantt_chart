@@ -1755,28 +1755,49 @@ var Gantt = (function () {
                 // }
 
                 // test 
-                const daatum = document.querySelector('.date');
+                // const daatum = document.querySelector('.date');
+                // createSVG('text', {
+                //     x: date.lower_x,
+                //     y: date.lower_y,
+                //     innerHTML: date.lower_text,
+                //     class: 'lower-text',
+                //     append_to: daatum,
+                // });
+
+                // if (date.upper_text) {
+                //     const $upper_text = createSVG('text', {
+                //         x: date.upper_x,
+                //         y: date.upper_y,
+                //         innerHTML: date.upper_text,
+                //         class: 'upper-text',
+                //         append_to: daatum,
+                //     });
+
+                //     // remove out-of-bound dates
+                //     if (
+                //         $upper_text.getBBox().x2 > this.layers.grid.getBBox().width
+                //     ) {
+                //         $upper_text.remove();
+                //     }
+                // }
                 createSVG('text', {
                     x: date.lower_x,
                     y: date.lower_y,
                     innerHTML: date.lower_text,
                     class: 'lower-text',
-                    append_to: daatum,
+                    append_to: this.newLayers.date,
                 });
-
+        
                 if (date.upper_text) {
                     const $upper_text = createSVG('text', {
                         x: date.upper_x,
                         y: date.upper_y,
                         innerHTML: date.upper_text,
                         class: 'upper-text',
-                        append_to: daatum,
+                        append_to: this.newLayers.date,
                     });
-
-                    // remove out-of-bound dates
-                    if (
-                        $upper_text.getBBox().x2 > this.layers.grid.getBBox().width
-                    ) {
+        
+                    if ($upper_text.getBBox().x2 > this.layers.grid.getBBox().width) {
                         $upper_text.remove();
                     }
                 }
@@ -2263,12 +2284,12 @@ var Gantt = (function () {
          * @memberof Gantt
          */
         get_oldest_starting_date() {
-            // return new Date();
-            return this.tasks
-                .map((task) => task._start)
-                .reduce((prev_date, cur_date) =>
-                    cur_date <= prev_date ? cur_date : prev_date
-                );
+            return new Date();
+            // return this.tasks
+            //     .map((task) => task._start)
+            //     .reduce((prev_date, cur_date) =>
+            //         cur_date <= prev_date ? cur_date : prev_date
+            //     );
         }
 
         /**
