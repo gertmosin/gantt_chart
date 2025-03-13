@@ -1729,39 +1729,12 @@ var Gantt = (function () {
 
         make_dates() {
             for (let date of this.get_dates_to_draw()) {
-                // createSVG('text', {
-                //     x: date.lower_x,
-                //     y: date.lower_y,
-                //     innerHTML: date.lower_text,
-                //     class: 'lower-text',
-                //     append_to: this.layers.date,
-                // });
-
-                // if (date.upper_text) {
-                //     const $upper_text = createSVG('text', {
-                //         x: date.upper_x,
-                //         y: date.upper_y,
-                //         innerHTML: date.upper_text,
-                //         class: 'upper-text',
-                //         append_to: this.layers.date,
-                //     });
-
-                //     // remove out-of-bound dates
-                //     if (
-                //         $upper_text.getBBox().x2 > this.layers.grid.getBBox().width
-                //     ) {
-                //         $upper_text.remove();
-                //     }
-                // }
-
-                //test 
-                const daatum = document.querySelector('.date');
                 createSVG('text', {
                     x: date.lower_x,
                     y: date.lower_y,
                     innerHTML: date.lower_text,
                     class: 'lower-text',
-                    append_to: daatum,
+                    append_to: this.layers.date,
                 });
 
                 if (date.upper_text) {
@@ -1770,7 +1743,7 @@ var Gantt = (function () {
                         y: date.upper_y,
                         innerHTML: date.upper_text,
                         class: 'upper-text',
-                        append_to: daatum,
+                        append_to: this.layers.date,
                     });
 
                     // remove out-of-bound dates
@@ -1780,6 +1753,33 @@ var Gantt = (function () {
                         $upper_text.remove();
                     }
                 }
+
+                // test 
+                // const daatum = document.querySelector('.date');
+                // createSVG('text', {
+                //     x: date.lower_x,
+                //     y: date.lower_y,
+                //     innerHTML: date.lower_text,
+                //     class: 'lower-text',
+                //     append_to: daatum,
+                // });
+
+                // if (date.upper_text) {
+                //     const $upper_text = createSVG('text', {
+                //         x: date.upper_x,
+                //         y: date.upper_y,
+                //         innerHTML: date.upper_text,
+                //         class: 'upper-text',
+                //         append_to: daatum,
+                //     });
+
+                //     // remove out-of-bound dates
+                //     if (
+                //         $upper_text.getBBox().x2 > this.layers.grid.getBBox().width
+                //     ) {
+                //         $upper_text.remove();
+                //     }
+                // }
             }
         }
 
